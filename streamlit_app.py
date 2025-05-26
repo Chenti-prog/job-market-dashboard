@@ -10,10 +10,20 @@ st.set_page_config(page_title="Job Market Dashboard", layout="wide")
 st.title("📊 Interactive Job Market Dashboard")
 
 # --- MongoDB Connection ---
-MONGO_URI = st.secrets["mongo"]["uri"]
-client = MongoClient(MONGO_URI)
-db = client["job_dashboard"]
-collection = db["jobs"]
+# MONGO_URI = st.secrets["mongo"]["uri"]
+# client = MongoClient(MONGO_URI)
+# db = client["job_dashboard"]
+# collection = db["jobs"]
+
+try:
+    MONGO_URI = st.secrets["mongo"]["uri"]
+    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
+    db = client["job_dashboard"]
+    collection = db["jobs"]
+    client.server_info()  # 🔍 Force connection to test
+except Exception as e:
+    st.error(f"❌ MongoDB Connection Error: {e}")
+    st.stop()
 
 # --- Load Data ---
 data = list(collection.find({}, {"_id": 0}))
