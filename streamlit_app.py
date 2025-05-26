@@ -10,7 +10,7 @@ st.set_page_config(page_title="Job Market Dashboard", layout="wide")
 st.title("📊 Interactive Job Market Dashboard")
 
 # --- MongoDB Connection ---
-MONGO_URI = "mongodb+srv://chentiyakub:ZZsz4AAdyroG4AyT@potential0.vwabawn.mongodb.net/?%0AretryWrites=true&w=majority&appName=Potential0"
+MONGO_URI = st.secrets["mongo"]["uri"]
 client = MongoClient(MONGO_URI)
 db = client["job_dashboard"]
 collection = db["jobs"]
