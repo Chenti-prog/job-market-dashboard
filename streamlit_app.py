@@ -60,7 +60,15 @@ st.write(f"### {len(filtered_df)} job listings found")
 st.dataframe(filtered_df)
 
 # --- Chart 1: Top Job Titles ---
-if not filtered_df.empty:
+# if not filtered_df.empty:
+#     top_titles = filtered_df["title"].value_counts().head(10)
+#     fig1, ax1 = plt.subplots()
+#     top_titles.plot(kind='bar', ax=ax1, color='skyblue')
+#     ax1.set_title("Top 10 Job Titles")
+#     ax1.set_xlabel("Count")
+#     ax1.invert_yaxis()
+#     st.pyplot(fig1)
+if "title" in filtered_df.columns and not filtered_df["title"].isna().all():
     top_titles = filtered_df["title"].value_counts().head(10)
     fig1, ax1 = plt.subplots()
     top_titles.plot(kind='barh', ax=ax1, color='skyblue')
@@ -70,15 +78,31 @@ if not filtered_df.empty:
     st.pyplot(fig1)
 
     # --- Chart 2: Region Breakdown ---
+    # region_counts = filtered_df["region"].value_counts()
+    # fig2, ax2 = plt.subplots()
+    # region_counts.plot(kind='bar', ax=ax2, color='coral')
+    # ax2.set_title("Job Listings by Region")
+    # ax2.set_ylabel("Count")
+    # st.pyplot(fig2)
+   
     region_counts = filtered_df["region"].value_counts()
     fig2, ax2 = plt.subplots()
     region_counts.plot(kind='bar', ax=ax2, color='coral')
     ax2.set_title("Job Listings by Region")
     ax2.set_ylabel("Count")
+    ax2.tick_params(axis='x', rotation=45)
+    fig2.tight_layout()
     st.pyplot(fig2)
 
     # --- Chart 3: Remote vs Onsite ---
-    job_mode = filtered_df["onsite_remote"].str.lower().value_counts()
+    # job_mode = filtered_df["onsite_remote"].str.lower().value_counts()
+    # fig3, ax3 = plt.subplots()
+    # ax3.pie(job_mode, labels=job_mode.index, autopct="%1.1f%%", startangle=140)
+    # ax3.set_title("Remote vs Onsite Job Distribution")
+    # ax3.axis("equal")
+    # st.pyplot(fig3)
+
+    job_mode = filtered_df["onsite_remote"].dropna().str.lower().value_counts()
     fig3, ax3 = plt.subplots()
     ax3.pie(job_mode, labels=job_mode.index, autopct="%1.1f%%", startangle=140)
     ax3.set_title("Remote vs Onsite Job Distribution")
